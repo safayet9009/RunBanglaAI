@@ -456,56 +456,86 @@ const marathonEvents = [
   {
     id: 1,
     title: "Dhaka City Marathon 2026",
-    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&h=300&fit=crop",
+    icon: "🏙️",
+    image: "https://images.pexels.com/photos/3775135/pexels-photo-3775135.jpeg?w=400&h=300&fit=crop",
     description: "Experience the vibrant streets of Dhaka in this exciting urban marathon event. Join thousands of runners for an unforgettable day filled with energy, community spirit, and fitness challenges.",
     date: "May 15, 2026",
     location: "Dhaka, Bangladesh",
-    distance: "5K / 10K / 21K"
+    distance: "5K / 10K / 21K",
+    startLat: 23.8103,
+    startLng: 90.4125,
+    endLat: 23.7808,
+    endLng: 90.3621
   },
   {
     id: 2,
     title: "Cox's Bazar Beach Run",
-    image: "https://images.unsplash.com/photo-1552674605-5defe6aa44bb?w=400&h=300&fit=crop",
+    icon: "🏖️",
+    image: "https://images.pexels.com/photos/3714903/pexels-photo-3714903.jpeg?w=400&h=300&fit=crop",
     description: "Run on the world's longest natural sea beach. Feel the sand beneath your feet and the sea breeze in your face in this unique beachside marathon experience.",
     date: "June 10, 2026",
     location: "Cox's Bazar, Bangladesh",
-    distance: "5K / 10K"
+    distance: "5K / 10K",
+    startLat: 21.4272,
+    startLng: 91.9680,
+    endLat: 21.4435,
+    endLng: 92.0019
   },
   {
     id: 3,
     title: "Sundarbans Trail Run",
-    image: "https://images.unsplash.com/photo-1489749798305-4fea3ba63d60?w=400&h=300&fit=crop",
+    icon: "🌳",
+    image: "https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?w=400&h=300&fit=crop",
     description: "Challenge yourself in nature's backyard. Run through the mystical trails of the Sundarbans mangrove forests. An adventure like no other.",
     date: "July 8, 2026",
     location: "Sundarbans, Bangladesh",
-    distance: "10K / 21K"
+    distance: "10K / 21K",
+    startLat: 22.3045,
+    startLng: 89.1865,
+    endLat: 22.2765,
+    endLng: 89.2098
   },
   {
     id: 4,
     title: "Chattogram Hill Marathon",
-    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop",
+    icon: "⛰️",
+    image: "https://images.pexels.com/photos/1619317/pexels-photo-1619317.jpeg?w=400&h=300&fit=crop",
     description: "Conquer the hills of Chattogram in this challenging mountain marathon. Test your endurance and strength against nature's toughest terrain.",
     date: "August 12, 2026",
     location: "Chattogram, Bangladesh",
-    distance: "10K / 21K"
+    distance: "10K / 21K",
+    startLat: 22.3384,
+    startLng: 91.8143,
+    endLat: 22.3598,
+    endLng: 91.7832
   },
   {
     id: 5,
     title: "Sylhet Tea Garden Run",
-    image: "https://images.unsplash.com/photo-1473093295203-cad00df16e50?w=400&h=300&fit=crop",
+    icon: "🌾",
+    image: "https://images.pexels.com/photos/1194765/pexels-photo-1194765.jpeg?w=400&h=300&fit=crop",
     description: "Run through the lush green tea gardens of Sylhet. A unique running experience surrounded by nature's beauty and serene landscape.",
     date: "September 5, 2026",
     location: "Sylhet, Bangladesh",
-    distance: "5K / 10K"
+    distance: "5K / 10K",
+    startLat: 24.8951,
+    startLng: 91.8734,
+    endLat: 24.8767,
+    endLng: 91.8896
   },
   {
     id: 6,
     title: "Rajshahi Heritage Run",
-    image: "https://images.unsplash.com/photo-1508615039623-a25605d2b022?w=400&h=300&fit=crop",
+    icon: "🏛️",
+    image: "https://images.pexels.com/photos/3638003/pexels-photo-3638003.jpeg?w=400&h=300&fit=crop",
     description: "Explore the historical heritage of Rajshahi while running. A perfect blend of fitness and cultural experience through the city's historic districts.",
     date: "October 20, 2026",
     location: "Rajshahi, Bangladesh",
-    distance: "5K / 10K / 21K"
+    distance: "5K / 10K / 21K",
+    startLat: 24.3745,
+    startLng: 88.6042,
+    endLat: 24.3652,
+    endLng: 88.5891
   }
 ];
 
@@ -550,6 +580,7 @@ function initMarathonCarousel() {
 function createMarathonCard(event) {
   const card = document.createElement('div');
   card.className = 'marathon-card';
+  card.id = `marathon-card-${event.id}`;
   card.onclick = (e) => {
     // Only open modal if not dragging
     if (!isDragging) {
@@ -558,7 +589,9 @@ function createMarathonCard(event) {
   };
   
   card.innerHTML = `
-    <img src="${event.image}" alt="${event.title}" class="marathon-card-image" loading="lazy">
+    <div class="marathon-card-image-container">
+      <img src="${event.image}" alt="${event.title}" class="marathon-card-image" loading="lazy">
+    </div>
     <div class="marathon-card-content">
       <h3 class="marathon-card-title">${event.title}</h3>
       <p class="marathon-card-description">${event.description}</p>
@@ -567,11 +600,184 @@ function createMarathonCard(event) {
         <div class="marathon-meta-item">📍 ${event.location}</div>
         <div class="marathon-meta-item">🏃 ${event.distance}</div>
       </div>
-      <button class="marathon-card-btn" onclick="event.stopPropagation();">View Details</button>
+      <div class="marathon-card-buttons">
+        <button class="marathon-card-btn btn-register" data-event-id="${event.id}">🏃 Register Now</button>
+        <button class="marathon-card-btn btn-map" data-event-id="${event.id}">🗺️ Map</button>
+      </div>
     </div>
   `;
   
+  // Add click handlers
+  const registerBtn = card.querySelector('.btn-register');
+  const mapBtn = card.querySelector('.btn-map');
+  
+  registerBtn.onclick = (e) => {
+    e.stopPropagation();
+    registerMarathon();
+  };
+  
+  mapBtn.onclick = (e) => {
+    e.stopPropagation();
+    openMarathonMap(event);
+  };
+  
   return card;
+}
+
+// Open Marathon Map Modal
+function openMarathonMap(event) {
+  // Create map modal if it doesn't exist
+  let mapModal = document.getElementById('mapModal');
+  if (!mapModal) {
+    mapModal = document.createElement('div');
+    mapModal.id = 'mapModal';
+    mapModal.className = 'map-modal';
+    mapModal.innerHTML = `
+      <div class="map-modal-content">
+        <button class="map-modal-close" onclick="closeMarathonMap()">✕</button>
+        <h2 class="map-modal-title"></h2>
+        <div class="map-modal-controls">
+          <button class="map-control-btn" onclick="zoomMapIn()">🔍+ Zoom In</button>
+          <button class="map-control-btn" onclick="zoomMapOut()">🔍- Zoom Out</button>
+          <button class="map-control-btn" onclick="fitMapView()">📍 Fit View</button>
+        </div>
+        <div id="mapContainer" class="map-modal-map"></div>
+      </div>
+    `;
+    document.body.appendChild(mapModal);
+  }
+
+  // Update title
+  document.querySelector('.map-modal-title').textContent = event.title;
+
+  // Store current event for controls
+  window.currentMapEvent = event;
+
+  // Show modal
+  mapModal.style.display = 'flex';
+
+  // Initialize map after modal is visible
+  setTimeout(() => {
+    initMapInModal(event);
+  }, 300);
+}
+
+// Close Marathon Map Modal
+function closeMarathonMap() {
+  const mapModal = document.getElementById('mapModal');
+  if (mapModal) {
+    mapModal.style.display = 'none';
+  }
+  
+  // Properly destroy the map instance
+  if (window.marathonMap) {
+    window.marathonMap.remove();
+    window.marathonMap = null;
+  }
+}
+
+// Initialize Map in Modal
+function initMapInModal(event) {
+  const mapContainer = document.getElementById('mapContainer');
+  if (!mapContainer) return;
+
+  // Destroy existing map if any
+  if (window.marathonMap) {
+    window.marathonMap.remove();
+    window.marathonMap = null;
+  }
+
+  // Clear container
+  mapContainer.innerHTML = '';
+
+  // Calculate center point
+  const centerLat = (event.startLat + event.endLat) / 2;
+  const centerLng = (event.startLng + event.endLng) / 2;
+
+  // Create new map instance
+  window.marathonMap = L.map(mapContainer, {
+    preferCanvas: true,
+    zoomControl: false,
+    attributionControl: true
+  }).setView([centerLat, centerLng], 13);
+
+  // Add tile layer (OpenStreetMap)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 19
+  }).addTo(window.marathonMap);
+
+  // Wait for map to be ready before continuing
+  window.marathonMap.whenReady(() => {
+    // Trigger map resize
+    window.marathonMap.invalidateSize(false);
+
+    // Add start marker (🟢 green)
+    L.circleMarker([event.startLat, event.startLng], {
+      radius: 10,
+      fillColor: '#00ff88',
+      color: '#ffffff',
+      weight: 3,
+      opacity: 1,
+      fillOpacity: 0.9,
+      className: 'map-marker-start'
+    }).addTo(window.marathonMap).bindPopup('<div style="text-align:center; font-weight:bold;">🟢 START POINT</div>').openPopup();
+
+    // Add end marker (🔴 red)
+    L.circleMarker([event.endLat, event.endLng], {
+      radius: 10,
+      fillColor: '#ff4444',
+      color: '#ffffff',
+      weight: 3,
+      opacity: 1,
+      fillOpacity: 0.9,
+      className: 'map-marker-end'
+    }).addTo(window.marathonMap).bindPopup('<div style="text-align:center; font-weight:bold;">🔴 FINISH POINT</div>');
+
+    // Draw line between start and end
+    L.polyline([
+      [event.startLat, event.startLng],
+      [event.endLat, event.endLng]
+    ], {
+      color: '#00ff88',
+      weight: 4,
+      opacity: 0.8,
+      dashArray: '5, 5',
+      lineCap: 'round',
+      lineJoin: 'round'
+    }).addTo(window.marathonMap);
+
+    // Fit map to markers
+    window.marathonMap.fitBounds([
+      [event.startLat, event.startLng],
+      [event.endLat, event.endLng]
+    ], {padding: [100, 100]});
+
+    // Store bounds for later
+    window.mapBounds = [
+      [event.startLat, event.startLng],
+      [event.endLat, event.endLng]
+    ];
+  });
+}
+
+// Map zoom controls
+function zoomMapIn() {
+  if (window.marathonMap) {
+    window.marathonMap.zoomIn();
+  }
+}
+
+function zoomMapOut() {
+  if (window.marathonMap) {
+    window.marathonMap.zoomOut();
+  }
+}
+
+function fitMapView() {
+  if (window.marathonMap && window.mapBounds) {
+    window.marathonMap.fitBounds(window.mapBounds, {padding: [100, 100]});
+  }
 }
 
 // Setup Drag Scroll Functionality
