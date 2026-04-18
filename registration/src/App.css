@@ -1,0 +1,437 @@
+/* ============================================
+   APP STYLES
+   ============================================ */
+
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+  padding: 2rem;
+}
+
+/* ============================================
+   EVENTS SECTION
+   ============================================ */
+
+.events-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  color: #00ff88;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+.header p {
+  font-size: 1.1rem;
+  color: #a8b5c8;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  animation: fadeIn 1s ease-out 0.2s backwards;
+}
+
+.event-card {
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(0, 255, 136, 0.2);
+  border-radius: 15px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.event-card:hover {
+  transform: translateY(-10px);
+  border-color: #00ff88;
+  box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+}
+
+.event-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.event-card h3 {
+  font-size: 1.3rem;
+  color: #00ff88;
+  margin-bottom: 0.5rem;
+}
+
+.event-card p {
+  color: #a8b5c8;
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.event-date,
+.event-location,
+.event-distance {
+  font-size: 0.9rem;
+}
+
+.event-amount {
+  font-size: 1.2rem;
+  color: #ffcc00;
+  font-weight: 600;
+  margin: 1rem 0;
+}
+
+.btn-register {
+  width: 100%;
+  padding: 0.9rem;
+  background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
+  border: none;
+  border-radius: 8px;
+  color: #0a0a0a;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 1rem;
+}
+
+.btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+}
+
+/* ============================================
+   FORM SECTION
+   ============================================ */
+
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  border-radius: 20px;
+  padding: 3rem;
+  animation: slideUp 0.5s ease-out;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-header h2 {
+  font-size: 1.8rem;
+  color: #00ff88;
+  margin-bottom: 0.5rem;
+}
+
+.form-header p {
+  color: #a8b5c8;
+  font-size: 0.95rem;
+}
+
+.event-info {
+  background: rgba(0, 255, 136, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.event-info h4 {
+  color: #00ff88;
+  margin-bottom: 0.5rem;
+}
+
+.event-info p {
+  color: #a8b5c8;
+  font-size: 0.9rem;
+  margin: 0.3rem 0;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  color: #e0e0e0;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #00ff88;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.step-indicator {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.step {
+  flex: 1;
+  height: 4px;
+  background: rgba(0, 255, 136, 0.2);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.step.active {
+  background: #00ff88;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+}
+
+.form-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: space-between;
+}
+
+.btn {
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  flex: 1;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
+  color: #0a0a0a;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: rgba(0, 255, 136, 0.1);
+  color: #00ff88;
+  border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.btn-secondary:hover {
+  background: rgba(0, 255, 136, 0.2);
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alert-error {
+  background: rgba(255, 71, 87, 0.1);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  color: #ff7f7f;
+}
+
+.alert-success {
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  color: #00ff88;
+}
+
+/* ============================================
+   SUCCESS PAGE
+   ============================================ */
+
+.success-container {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  animation: slideUp 0.5s ease-out;
+}
+
+.success-card {
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  border-radius: 20px;
+  padding: 3rem;
+}
+
+.success-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: bounce 0.8s ease-out;
+}
+
+.success-card h2 {
+  font-size: 2rem;
+  color: #00ff88;
+  margin-bottom: 0.5rem;
+}
+
+.success-card p {
+  color: #a8b5c8;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.ticket-info {
+  background: rgba(0, 255, 136, 0.05);
+  border: 2px solid rgba(0, 255, 136, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.ticket-field {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.ticket-field label {
+  color: #a8b5c8;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.ticket-field .value {
+  color: #00ff88;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.qr-code-container {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  display: inline-block;
+  margin: 1.5rem 0;
+}
+
+.qr-code-container canvas {
+  display: block;
+}
+
+.success-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .form-container {
+    padding: 2rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-buttons {
+    flex-direction: column-reverse;
+  }
+
+  .success-buttons {
+    flex-direction: column;
+  }
+}

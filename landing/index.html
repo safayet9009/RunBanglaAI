@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Run Bangla AI - AI-Powered Fitness Platform</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="registration.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <div class="navbar-logo">
+        <span class="logo-icon">🏃</span>
+        <span class="logo-text">Run Bangla AI</span>
+      </div>
+      <div class="navbar-menu" id="navbarMenu">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#marathons" class="nav-link" onclick="smoothScrollToMarathon()">Marathon Events</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#mission" class="nav-link">About</a>
+        <a href="#stats" class="nav-link">Impact</a>
+      </div>
+      <div class="navbar-buttons" id="navbarButtons">
+        <button class="btn btn-secondary" onclick="window.location.href='login.html'">Login</button>
+        <button class="btn btn-primary" onclick="window.location.href='signup.html'">Sign Up</button>
+      </div>
+      <div class="profile-icon-container" id="profileIconContainer" style="display: none;">
+        <button class="profile-icon-btn" onclick="window.location.href='profile.html'" title="View Profile">
+          <span class="profile-icon">👤</span>
+        </button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1 class="hero-title animate-fade-in">Run Smart. Live Strong.</h1>
+      <p class="hero-subtitle animate-fade-in-delay">
+        AI-powered fitness platform that tracks your progress, builds your streak, and pushes you beyond limits.
+      </p>
+      <div class="hero-buttons animate-fade-in-delay-2">
+        <button class="btn btn-primary btn-large" onclick="window.location.href='signup.html'">Get Started</button>
+        <button class="btn btn-outline btn-large" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Explore Features</button>
+        <button class="btn btn-success btn-large" onclick="window.location.href='profile.html'">Enter</button>
+      </div>
+    </div>
+    <div class="hero-background"></div>
+  </section>
+
+  <!-- Marathon Events Section -->
+  <section class="marathon-section" id="marathons">
+    <div class="section-header">
+      <h2>🏅 Upcoming Marathon Events</h2>
+      <p>Join the community at exciting running events across Bangladesh</p>
+    </div>
+
+    <div class="marathon-carousel-container" id="marathonContainer">
+      <div class="marathon-carousel" id="marathonCarousel">
+        <!-- Events will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Marathon Modal -->
+  <div id="marathonModal" class="marathon-modal">
+    <div class="marathon-modal-content">
+      <button class="modal-close" onclick="closeMarathonModal()">✕</button>
+      <div class="modal-body">
+        <img id="modalImage" src="" alt="Marathon Event" class="modal-image">
+        <div class="modal-details">
+          <h2 id="modalTitle"></h2>
+          <p id="modalDescription" class="modal-description"></p>
+          <div class="modal-info">
+            <div class="info-item">
+              <span class="info-icon">📅</span>
+              <div>
+                <strong>Date</strong>
+                <p id="modalDate"></p>
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">📍</span>
+              <div>
+                <strong>Location</strong>
+                <p id="modalLocation"></p>
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">🏃</span>
+              <div>
+                <strong>Distance</strong>
+                <p id="modalDistance"></p>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-large" onclick="registerMarathon()">Register Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration Modal -->
+  <div id="registrationModal" class="registration-modal" style="display: none;">
+    <div class="registration-container">
+      <button class="close-btn" onclick="closeRegistrationForm()">✕</button>
+      
+      <h1 class="registration-title">Marathon Registration</h1>
+      
+      <!-- Step Indicator -->
+      <div class="registration-steps">
+        <div class="registration-step" id="regStep1">
+          <span class="step-number">1</span>
+          <p>Details</p>
+        </div>
+        <div class="registration-step-line"></div>
+        <div class="registration-step" id="regStep2">
+          <span class="step-number">2</span>
+          <p>Payment</p>
+        </div>
+        <div class="registration-step-line"></div>
+        <div class="registration-step" id="regStep3">
+          <span class="step-number">3</span>
+          <p>Success</p>
+        </div>
+      </div>
+
+      <!-- Step 1: Details -->
+      <div id="regStepContent1" class="registration-step-content">
+        <div class="event-info-box">
+          <p><strong>Event:</strong> <span id="eventNameReg"></span></p>
+          <p><strong>Date:</strong> <span id="eventDateReg"></span></p>
+          <p><strong>Location:</strong> <span id="eventLocationReg"></span></p>
+        </div>
+
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" placeholder="Your full name" onchange="handleRegistrationInput('name', this.value)">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" placeholder="your@email.com" onchange="handleRegistrationInput('email', this.value)">
+          </div>
+          <div class="form-group">
+            <label>Phone *</label>
+            <input type="tel" placeholder="01XXXXXXXXX" onchange="handleRegistrationInput('phone', this.value)">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Emergency Contact *</label>
+          <input type="tel" placeholder="Emergency contact number" onchange="handleRegistrationInput('emergencyContact', this.value)">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>T-Shirt Size</label>
+            <select onchange="handleRegistrationInput('tshirtSize', this.value)">
+              <option value="XS">XS - Extra Small</option>
+              <option value="S">S - Small</option>
+              <option value="M" selected>M - Medium</option>
+              <option value="L">L - Large</option>
+              <option value="XL">XL - Extra Large</option>
+              <option value="XXL">XXL - 2X Large</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Race Category *</label>
+            <select onchange="handleRegistrationInput('category', this.value)">
+              <option value="5K" selected>5K Race (500 Tk)</option>
+              <option value="10K">10K Race (800 Tk)</option>
+              <option value="21K">21K Marathon (1200 Tk)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Medical Conditions (optional)</label>
+          <textarea placeholder="Any medical conditions we should know about?" onchange="handleRegistrationInput('medicalCondition', this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Step 2: Payment -->
+      <div id="regStepContent2" class="registration-step-content" style="display: none;">
+        <div class="price-breakdown">
+          <div class="price-row">
+            <span>Base Amount:</span>
+            <span class="price" id="basePriceDisplay">500 Tk</span>
+          </div>
+          <div class="price-row" id="discountDisplay" style="display: none;">
+            <span>Discount (<span id="discountPercentageDisplay">10</span>%):</span>
+            <span class="price discount" id="discountAmountDisplay">-50 Tk</span>
+          </div>
+          <div class="price-row total">
+            <span>Total Amount:</span>
+            <span class="price total-price" id="finalAmountDisplay">500 Tk</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Promo Code (Optional)</label>
+          <input type="text" placeholder="Enter promo code (RUN10, BANGLA5, etc.)" onchange="handleRegistrationInput('discountCode', this.value)">
+          <small>Available codes: RUN10 (10%), RUN20 (20%), BANGLA5 (5%), FITLIFE15 (15%)</small>
+        </div>
+
+        <h3>Payment Method</h3>
+        <div class="payment-methods">
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="credit_card" onchange="handleRegistrationInput('paymentMethod', this.value)" checked>
+            <span>💳 Credit Card</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="debit_card" onchange="handleRegistrationInput('paymentMethod', this.value)">
+            <span>🏧 Debit Card</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="mobile_banking" onchange="handleRegistrationInput('paymentMethod', this.value)">
+            <span>📱 Mobile Banking</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="bank_transfer" onchange="handleRegistrationInput('paymentMethod', this.value)">
+            <span>🏦 Bank Transfer</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 3: Success -->
+      <div id="regStepContent3" class="registration-step-content" style="display: none;">
+        <div class="success-message">
+          <div class="success-icon">✓</div>
+          <h2>Registration Successful!</h2>
+          <p>Your marathon registration has been confirmed.</p>
+        </div>
+
+        <div class="ticket-info">
+          <div class="ticket-header">Your Ticket Information</div>
+          <div class="ticket-details">
+            <div class="ticket-row">
+              <span>Event:</span>
+              <span id="eventNameDisplay"></span>
+            </div>
+            <div class="ticket-row">
+              <span>Name:</span>
+              <span id="registrantNameDisplay"></span>
+            </div>
+            <div class="ticket-row">
+              <span>Category:</span>
+              <span id="categoryDisplay"></span>
+            </div>
+            <div class="ticket-row">
+              <span>T-Shirt Size:</span>
+              <span id="tshirtSizeDisplay"></span>
+            </div>
+            <div class="ticket-row">
+              <span>Amount Paid:</span>
+              <span id="finalAmountPaidDisplay"></span>
+              <span class="discount-badge" id="discountBadge" style="display: none;"></span>
+            </div>
+          </div>
+
+          <div class="ticket-id-box">
+            <p>Your Ticket ID:</p>
+            <p class="ticket-id" id="ticketIdDisplay">RB-XXXXXXXXXX</p>
+          </div>
+
+          <div class="qr-code-box">
+            <p>Scan at Event Entry:</p>
+            <img src="" alt="QR Code" id="qrCodeImage" class="qr-code">
+          </div>
+
+          <p class="success-note">📧 A confirmation email has been sent to your registered email address.</p>
+          <p class="xp-reward">🎁 You earned <strong>+100 XP</strong> and <strong>"Marathon Challenger"</strong> badge! 🏆</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="registration-actions">
+        <button class="btn btn-secondary" id="regPrevBtn" onclick="handleRegistrationPrevious()">← Back</button>
+        <button class="btn btn-primary" id="regNextBtn" onclick="handleRegistrationNext()">Next: Payment →</button>
+        <button class="btn btn-secondary" id="regCloseBtn" onclick="closeRegistrationForm()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="section-header">
+      <h2>Why Choose Run Bangla AI?</h2>
+      <p>Everything you need to build a healthy, productive lifestyle</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card glass-card">
+        <div class="feature-icon">🤖</div>
+        <h3>AI Workout Coach</h3>
+        <p>Get personalized workout suggestions powered by intelligent algorithms tailored to your fitness level.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <div class="feature-icon">⭐</div>
+        <h3>XP & Level System</h3>
+        <p>Earn experience points from every workout and unlock new levels as you progress your fitness journey.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Duolingo-style Leaderboard</h3>
+        <p>Compete with friends and users worldwide on our interactive leaderboard to stay motivated.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <div class="feature-icon">📊</div>
+        <h3>Daily Workout Tracking</h3>
+        <p>Track running distance, duration, calories burned, and get detailed analytics on your performance.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <div class="feature-icon">🔥</div>
+        <h3>Streak Motivation</h3>
+        <p>Build daily streaks and maintain consistency. The longer your streak, the more rewards you unlock.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <div class="feature-icon">📈</div>
+        <h3>Progress Analytics</h3>
+        <p>Visualize your fitness journey with detailed charts, insights, and personalized recommendations.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="mission">
+    <div class="mission-content">
+      <div class="mission-text">
+        <h2>Our Mission</h2>
+        <p class="mission-subtitle">Why Run Bangla AI?</p>
+        <ul class="mission-list">
+          <li><span class="checkmark">✓</span> Promote fitness culture in Bangladesh</li>
+          <li><span class="checkmark">✓</span> Build discipline through gamification</li>
+          <li><span class="checkmark">✓</span> Encourage a healthier lifestyle for all</li>
+          <li><span class="checkmark">✓</span> Create an AI-driven coaching system</li>
+          <li><span class="checkmark">✓</span> Connect fitness enthusiasts globally</li>
+        </ul>
+        <button class="btn btn-primary" onclick="window.location.href='signup.html'">Learn More</button>
+      </div>
+      <div class="mission-visual">
+        <div class="mission-card glass-card">
+          <div class="mission-stat">
+            <div class="stat-number">1M+</div>
+            <div class="stat-label">Fitness Enthusiasts</div>
+          </div>
+          <div class="mission-stat">
+            <div class="stat-number">500K</div>
+            <div class="stat-label">Active Streaks</div>
+          </div>
+          <div class="mission-stat">
+            <div class="stat-number">10M+</div>
+            <div class="stat-label">Workouts Logged</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats" id="stats">
+    <div class="section-header">
+      <h2>Our Impact</h2>
+      <p>Join millions of users building a healthier world</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card glass-card">
+        <div class="stat-counter" data-target="500000">0</div>
+        <p class="stat-label">Active Users</p>
+      </div>
+      <div class="stat-card glass-card">
+        <div class="stat-counter" data-target="2500000">0</div>
+        <p class="stat-label">Workouts Completed</p>
+      </div>
+      <div class="stat-card glass-card">
+        <div class="stat-counter" data-target="125000">0</div>
+        <p class="stat-label">Active Streaks</p>
+      </div>
+      <div class="stat-card glass-card">
+        <div class="stat-counter" data-target="50000000">0</div>
+        <p class="stat-label">XP Earned</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard Preview Section -->
+  <section class="preview">
+    <div class="section-header">
+      <h2>Your Fitness Dashboard Awaits</h2>
+      <p>Track, compete, and achieve your fitness goals in one beautiful interface</p>
+    </div>
+    <div class="preview-container">
+      <div class="dashboard-preview glass-card">
+        <div class="preview-header">
+          <div class="preview-avatar"></div>
+          <div class="preview-user-info">
+            <h3>Your Profile</h3>
+            <p>Level 15 • 42,500 XP</p>
+          </div>
+        </div>
+        <div class="preview-stat-bar">
+          <div class="stat-label">Level Progress</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 65%"></div>
+          </div>
+        </div>
+        <div class="preview-stats">
+          <div class="mini-stat">
+            <span class="mini-label">Streak</span>
+            <span class="mini-value">🔥 25</span>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-label">Today</span>
+            <span class="mini-value">✓ 5km</span>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-label">Rank</span>
+            <span class="mini-value">🏆 #42</span>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-full">View Dashboard</button>
+      </div>
+      <div class="preview-features">
+        <div class="preview-feature">
+          <span class="feature-num">01</span>
+          <h4>Real-time Updates</h4>
+          <p>See your progress update instantly as you complete workouts</p>
+        </div>
+        <div class="preview-feature">
+          <span class="feature-num">02</span>
+          <h4>Smart Recommendations</h4>
+          <p>Get AI-suggested workouts based on your fitness level</p>
+        </div>
+        <div class="preview-feature">
+          <span class="feature-num">03</span>
+          <h4>Community Leaderboard</h4>
+          <p>Compete and connect with fitness enthusiasts worldwide</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="cta-content">
+      <h2>Start Your Fitness Journey Today</h2>
+      <p>Join thousands of users transforming their lives through Run Bangla AI</p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary btn-large" onclick="window.location.href='signup.html'">Join Now</button>
+        <button class="btn btn-secondary btn-large" onclick="window.location.href='login.html'">Login</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <div class="footer-logo">
+          <span class="logo-icon">🏃</span>
+          <span class="logo-text">Run Bangla AI</span>
+        </div>
+        <p class="footer-description">AI-powered fitness platform that builds healthy habits through gamification and community.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#mission">About</a></li>
+          <li><a href="#stats">Impact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Social</h4>
+        <ul>
+          <li><a href="#" target="_blank">Twitter</a></li>
+          <li><a href="#" target="_blank">Facebook</a></li>
+          <li><a href="#" target="_blank">Instagram</a></li>
+          <li><a href="#" target="_blank">LinkedIn</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Contact</h4>
+        <p>Email: hello@runbanglaai.com</p>
+        <p>Location: Dhaka, Bangladesh</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Run Bangla AI. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

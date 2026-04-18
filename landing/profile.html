@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Run Bangla AI</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: rgba(26, 26, 46, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      padding: 1rem 0;
+      border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+    }
+
+    .navbar-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #00ff88;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    .navbar-logo:hover {
+      opacity: 0.8;
+    }
+
+    .profile-icon-container {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .profile-icon-btn, .logout-btn {
+      background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      color: #0a0a0a;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .profile-icon-btn:hover, .logout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+    }
+
+    .logout-btn {
+      background: rgba(255, 71, 87, 0.2);
+      color: #ff7f7f;
+      border: 1px solid rgba(255, 71, 87, 0.3);
+    }
+
+    /* ===== PROFILE HEADER ===== */
+    .profile-header {
+      background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
+      border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+      padding: 2rem 1rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-20px) translateX(-10px); }
+    }
+
+    .profile-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .user-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00ff88, #00cc6f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      margin: 0 auto 1rem;
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+      border: 3px solid rgba(0, 255, 136, 0.5);
+    }
+
+    .user-name {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #00ff88;
+      margin-bottom: 0.5rem;
+    }
+
+    .user-level {
+      font-size: 1.1rem;
+      color: #a8b5c8;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ===== STATS GRID ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%);
+      border: 2px solid rgba(0, 255, 136, 0.2);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(0, 255, 136, 0.5);
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+      transform: translateY(-5px);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .stat-card-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #00ff88;
+      margin: 0.5rem 0;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #a8b5c8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ===== STREAK SECTION ===== */
+    .streak-section {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 204, 111, 0.05) 100%);
+      border: 2px solid rgba(0, 255, 136, 0.3);
+      border-radius: 15px;
+      padding: 2rem;
+      max-width: 500px;
+      margin: 2rem auto;
+      text-align: center;
+    }
+
+    .streak-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .streak-text {
+      font-size: 1.2rem;
+      color: #a8b5c8;
+      margin-bottom: 0.5rem;
+    }
+
+    .streak-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #00ff88;
+      margin-bottom: 0.5rem;
+    }
+
+    .streak-subtext {
+      font-size: 0.9rem;
+      color: #7a8696;
+    }
+
+    /* ===== LEADERBOARD PREVIEW ===== */
+    .leaderboard-section {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #00ff88;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .leaderboard-card {
+      background: linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 10px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .leaderboard-card:hover {
+      border-color: rgba(0, 255, 136, 0.5);
+      background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
+    }
+
+    .leaderboard-rank {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #00ff88;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .rank-1 { color: #ffd700; }
+    .rank-2 { color: #c0c0c0; }
+    .rank-3 { color: #cd7f32; }
+
+    .leaderboard-user {
+      flex: 1;
+    }
+
+    .leaderboard-name {
+      font-weight: 600;
+      color: #e0e0e0;
+      margin-bottom: 0.2rem;
+    }
+
+    .leaderboard-xp {
+      font-size: 0.9rem;
+      color: #a8b5c8;
+    }
+
+    .leaderboard-points {
+      font-weight: 700;
+      color: #00ff88;
+      font-size: 1.1rem;
+    }
+
+    /* ===== ACTIVITY SECTION ===== */
+    .activity-section {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .activity-card {
+      background: linear-gradient(135deg, rgba(26, 26, 46, 0.7) 0%, rgba(22, 33, 62, 0.7) 100%);
+      border-left: 3px solid rgba(0, 255, 136, 0.5);
+      border-radius: 5px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .activity-title {
+      font-weight: 600;
+      color: #e0e0e0;
+      margin-bottom: 0.3rem;
+    }
+
+    .activity-meta {
+      font-size: 0.85rem;
+      color: #a8b5c8;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-section {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
+      color: #0a0a0a;
+      border: none;
+      padding: 0.9rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 255, 136, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #00ff88;
+      border: 2px solid #00ff88;
+      padding: 0.9rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .user-name {
+        font-size: 1.5rem;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+      }
+
+      .user-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+      }
+
+      .navbar-container {
+        padding: 0 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <div class="navbar-logo" onclick="window.location.href='index.html'">
+        <span>🏃</span>
+        <span>Run Bangla AI</span>
+      </div>
+      <div class="profile-icon-container">
+        <button class="profile-icon-btn" title="Your Profile">👤 Profile</button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PROFILE HEADER -->
+  <section class="profile-header">
+    <div class="profile-content">
+      <div class="user-avatar"><span id="userAvatarText">👤</span></div>
+      <div class="user-name" id="userName">Loading...</div>
+      <div class="user-level" id="userLevel">Loading...</div>
+    </div>
+  </section>
+
+  <!-- STATS GRID -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-content">
+        <div class="stat-icon">🏃</div>
+        <div class="stat-value">42</div>
+        <div class="stat-label">Runs Completed</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-content">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-value" id="userXP">0</div>
+        <div class="stat-label">Total XP</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-content">
+        <div class="stat-icon">📊</div>
+        <div class="stat-value">185</div>
+        <div class="stat-label">KM Distance</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-content">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-value" id="userRank">#--</div>
+        <div class="stat-label">Global Rank</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STREAK SECTION -->
+  <div class="streak-section">
+    <div class="streak-icon">🔥</div>
+    <div class="streak-text">Current Streak</div>
+    <div class="streak-number" id="userStreak">0</div>
+    <div class="streak-subtext">Keep it going! 💪</div>
+  </div>
+
+  <!-- LEADERBOARD PREVIEW -->
+  <div class="leaderboard-section">
+    <div class="section-title">🏅 Top Runners</div>
+    
+    <div class="leaderboard-card">
+      <div class="leaderboard-rank rank-1">🥇</div>
+      <div class="leaderboard-user">
+        <div class="leaderboard-name">Ahmed Khan</div>
+        <div class="leaderboard-xp">Level 18 · 125 runs</div>
+      </div>
+      <div class="leaderboard-points">15,320 XP</div>
+    </div>
+
+    <div class="leaderboard-card">
+      <div class="leaderboard-rank rank-2">🥈</div>
+      <div class="leaderboard-user">
+        <div class="leaderboard-name">Fatima Begum</div>
+        <div class="leaderboard-xp">Level 17 · 98 runs</div>
+      </div>
+      <div class="leaderboard-points">12,850 XP</div>
+    </div>
+
+    <div class="leaderboard-card">
+      <div class="leaderboard-rank rank-3">🥉</div>
+      <div class="leaderboard-user">
+        <div class="leaderboard-name">Rajib Das</div>
+        <div class="leaderboard-xp">Level 16 · 87 runs</div>
+      </div>
+      <div class="leaderboard-points">11,200 XP</div>
+    </div>
+
+    <div class="leaderboard-card">
+      <div class="leaderboard-rank">4</div>
+      <div class="leaderboard-user">
+        <div class="leaderboard-name">You</div>
+        <div class="leaderboard-xp" id="leaderboardUserInfo">Level -- · -- runs</div>
+      </div>
+      <div class="leaderboard-points" id="leaderboardUserXP">0 XP</div>
+    </div>
+  </div>
+
+  <!-- RECENT ACTIVITY -->
+  <div class="activity-section">
+    <div class="section-title">📈 Recent Activity</div>
+    
+    <div class="activity-card">
+      <div class="activity-title">✅ Morning Run - 5K</div>
+      <div class="activity-meta">Today · 25 min · 250 XP earned</div>
+    </div>
+
+    <div class="activity-card">
+      <div class="activity-title">✅ Evening Jog - 3K</div>
+      <div class="activity-meta">Yesterday · 18 min · 150 XP earned</div>
+    </div>
+
+    <div class="activity-card">
+      <div class="activity-title">🎯 Unlocked - Speed Runner Badge</div>
+      <div class="activity-meta">2 days ago · Completed 10K in 45 mins</div>
+    </div>
+
+    <div class="activity-card">
+      <div class="activity-title">🔥 Reached 10-Day Streak</div>
+      <div class="activity-meta">3 days ago · Consistency is key!</div>
+    </div>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="btn-section">
+    <button class="btn-primary" onclick="window.location.href='index.html'">Back to Home</button>
+    <button class="btn-secondary" onclick="logout()" style="border-color: #ff7f7f; color: #ff7f7f;">Logout</button>
+  </div>
+
+  <br><br>
+
+  <script>
+    // Check if user is authenticated
+    function checkAuthentication() {
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
+      
+      if (!token || !user) {
+        alert('❌ Please login first!');
+        window.location.href = 'login.html';
+        return false;
+      }
+      return true;
+    }
+
+    // Load user data from localStorage
+    function loadUserData() {
+      const userString = localStorage.getItem('user');
+      if (!userString) return;
+      
+      try {
+        const user = JSON.parse(userString);
+        
+        // Update user profile information
+        document.getElementById('userName').textContent = user.name || 'User';
+        document.getElementById('userLevel').textContent = `Level ${user.level || 1} · Fitness Enthusiast`;
+        document.getElementById('userXP').textContent = (user.xp || 0).toLocaleString();
+        document.getElementById('userStreak').textContent = user.streak || 0;
+        
+        // Update avatar with first letter of name
+        const firstLetter = user.name ? user.name.charAt(0).toUpperCase() : '👤';
+        document.getElementById('userAvatarText').textContent = firstLetter;
+        
+        // Update leaderboard entry
+        document.getElementById('leaderboardUserInfo').textContent = `Level ${user.level || 1} · 42 runs`;
+        document.getElementById('leaderboardUserXP').textContent = `${(user.xp || 0).toLocaleString()} XP`;
+        
+        console.log('✅ User data loaded:', user);
+      } catch (error) {
+        console.error('❌ Error parsing user data:', error);
+      }
+    }
+    
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = 'index.html';
+    }
+    
+    // Check authentication and load data on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      if (checkAuthentication()) {
+        loadUserData();
+      }
+    });
+    
+    // Add smooth animations on load
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.stat-card').forEach((card, index) => {
+        card.style.animation = `slideUp 0.6s ease ${index * 0.1}s forwards`;
+      });
+    });
+
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

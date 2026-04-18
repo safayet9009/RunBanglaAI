@@ -1,0 +1,572 @@
+/* ============================================
+   REGISTRATION MODAL CSS
+   ============================================ */
+
+.registration-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.registration-container {
+  background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 650px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 255, 136, 0.1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.registration-title {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  background: linear-gradient(135deg, #00ff88, #00cc6f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Step Indicator */
+.registration-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.registration-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.registration-step .step-number {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(0, 255, 136, 0.1);
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #666;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.registration-step.active .step-number {
+  background: linear-gradient(135deg, #00ff88, #00cc6f);
+  border-color: #00ff88;
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+.registration-step p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #999;
+  font-weight: 500;
+}
+
+.registration-step.active p {
+  color: #00ff88;
+}
+
+.registration-step-line {
+  flex: 1;
+  height: 2px;
+  background: rgba(0, 255, 136, 0.1);
+  margin: 0 0.8rem;
+}
+
+.registration-step-line:nth-child(2) {
+  margin: 0 0.5rem;
+}
+
+.registration-step-line:nth-child(4) {
+  margin: 0 0.5rem;
+}
+
+/* Form Content */
+.registration-step-content {
+  animation: fadeInContent 0.3s ease;
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.event-info-box {
+  background: rgba(0, 255, 136, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.event-info-box p {
+  color: #ccc;
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-info-box strong {
+  color: #00ff88;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  color: #ddd;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #555;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #00ff88;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+}
+
+.form-group small {
+  display: block;
+  color: #888;
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group h3 {
+  color: #ddd;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+/* Price Breakdown */
+.price-breakdown {
+  background: rgba(0, 255, 136, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+  color: #ccc;
+}
+
+.price-row.total {
+  border: none;
+  border-top: 2px solid rgba(0, 255, 136, 0.3);
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.price {
+  font-weight: 600;
+  color: #00ff88;
+}
+
+.price.discount {
+  color: #ff6b9d;
+}
+
+.price-row.total .price {
+  font-size: 1.1rem;
+}
+
+/* Payment Methods */
+.payment-methods {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px solid rgba(0, 255, 136, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-option:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #00ff88;
+}
+
+.payment-option input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #00ff88;
+}
+
+.payment-option span {
+  color: #ddd;
+  font-weight: 500;
+  flex: 1;
+}
+
+.payment-option input[type="radio"]:checked + span {
+  color: #00ff88;
+}
+
+/* Success Message */
+.success-message {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00ff88, #00cc6f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: #000;
+  animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-message h2 {
+  color: #fff;
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.success-message p {
+  color: #999;
+  font-size: 0.95rem;
+}
+
+/* Ticket Info */
+.ticket-info {
+  background: rgba(0, 255, 136, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.ticket-header {
+  color: #00ff88;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.ticket-details {
+  display: grid;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.ticket-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  border-left: 3px solid rgba(0, 255, 136, 0.3);
+  color: #ccc;
+}
+
+.ticket-row span:first-child {
+  color: #999;
+  font-weight: 500;
+}
+
+.ticket-row span:last-child {
+  color: #fff;
+  font-weight: 600;
+}
+
+.discount-badge {
+  background: #ff6b9d;
+  color: #fff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
+}
+
+/* Ticket ID Box */
+.ticket-id-box {
+  background: rgba(0, 255, 136, 0.1);
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.ticket-id-box p {
+  margin: 0;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.ticket-id-box p:first-child {
+  margin-bottom: 0.5rem;
+}
+
+.ticket-id {
+  color: #00ff88;
+  font-size: 1.4rem;
+  font-weight: bold;
+  font-family: "Courier New", monospace;
+  letter-spacing: 1px;
+  margin-bottom: 0 !important;
+}
+
+/* QR Code Box */
+.qr-code-box {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.qr-code-box p {
+  color: #999;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.qr-code {
+  width: 120px;
+  height: 120px;
+  border: 3px solid rgba(0, 255, 136, 0.3);
+  border-radius: 8px;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  display: inline-block;
+}
+
+/* Success Note */
+.success-note {
+  color: #888;
+  font-size: 0.85rem;
+  text-align: center;
+  margin: 1rem 0;
+  padding: 0;
+}
+
+/* XP Reward */
+.xp-reward {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+  margin-top: 1.5rem;
+}
+
+/* Buttons */
+.registration-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00ff88, #00cc6f);
+  color: #000;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 255, 136, 0.3);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  color: #00ff88;
+}
+
+.btn-secondary:hover {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00ff88;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .registration-container {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .registration-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .registration-steps {
+    margin-bottom: 1.5rem;
+  }
+
+  .registration-step .step-number {
+    width: 40px;
+    height: 40px;
+    font-size: 0.95rem;
+  }
+
+  .registration-step p {
+    font-size: 0.75rem;
+  }
+
+  .registration-step-line {
+    height: 2px;
+    margin: 0 0.3rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .registration-actions {
+    flex-direction: column;
+  }
+
+  .close-btn {
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .success-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+}

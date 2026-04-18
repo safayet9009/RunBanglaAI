@@ -1,0 +1,937 @@
+/* ============================================
+   NAVBAR SCROLL EFFECT
+   ============================================ */
+
+const navbar = document.getElementById('navbar');
+let lastScrollPosition = 0;
+
+window.addEventListener('scroll', () => {
+  const currentScrollPosition = window.pageYOffset;
+
+  if (currentScrollPosition > 100) {
+    navbar.style.background = 'rgba(26, 26, 46, 0.95)';
+    navbar.style.boxShadow = '0 4px 20px rgba(0, 255, 136, 0.1)';
+  } else {
+    navbar.style.background = 'rgba(26, 26, 46, 0.7)';
+    navbar.style.boxShadow = 'none';
+  }
+
+  lastScrollPosition = currentScrollPosition;
+});
+
+/* ============================================
+   PROFILE ICON & LOGIN STATE
+   ============================================ */
+
+function checkLoginStatus() {
+  const token = localStorage.getItem('token');
+  const user = localStorage.getItem('user');
+  const navbarButtons = document.getElementById('navbarButtons');
+  const profileIconContainer = document.getElementById('profileIconContainer');
+
+  if (token && user) {
+    navbarButtons.style.display = 'none';
+    profileIconContainer.style.display = 'flex';
+  } else {
+    navbarButtons.style.display = 'flex';
+    profileIconContainer.style.display = 'none';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.href = 'index.html';
+}
+
+// Check login status on page load
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+window.addEventListener('load', checkLoginStatus);
+
+/* ============================================
+   HAMBURGER MENU
+   ============================================ */
+
+const hamburger = document.getElementById('hamburger');
+const navbarMenu = document.getElementById('navbarMenu');
+
+hamburger.addEventListener('click', () => {
+  navbarMenu.style.display = navbarMenu.style.display === 'flex' ? 'none' : 'flex';
+  hamburger.classList.toggle('active');
+});
+
+// Close menu when clicking on a link
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    navbarMenu.style.display = 'none';
+    hamburger.classList.remove('active');
+  });
+});
+
+/* ============================================
+   SMOOTH SCROLL BEHAVIOR
+   ============================================ */
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  });
+});
+
+/* ============================================
+   STAT COUNTER ANIMATION
+   ============================================ */
+
+const countUpStats = () => {
+  const statCounters = document.querySelectorAll('.stat-counter');
+  
+  const observerOptions = {
+    threshold: 0.5
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+        const target = parseInt(entry.target.getAttribute('data-target'));
+        const element = entry.target;
+        
+        countUpAnimation(element, target, 2000);
+        element.classList.add('counted');
+      }
+    });
+  }, observerOptions);
+
+  statCounters.forEach(counter => observer.observe(counter));
+};
+
+const countUpAnimation = (element, target, duration) => {
+  let start = 0;
+  const increment = target / (duration / 16);
+  
+  const counter = setInterval(() => {
+    start += increment;
+    if (start >= target) {
+      element.textContent = formatNumber(target);
+      clearInterval(counter);
+    } else {
+      element.textContent = formatNumber(Math.floor(start));
+    }
+  }, 16);
+};
+
+const formatNumber = (num) => {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'M';
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(0) + 'K';
+  }
+  return num.toString();
+};
+
+/* ============================================
+   SCROLL ANIMATIONS FOR ELEMENTS
+   ============================================ */
+
+const observeElements = () => {
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeIn 0.8s ease-out forwards';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  // Observe feature cards
+  document.querySelectorAll('.feature-card').forEach(card => {
+    observer.observe(card);
+  });
+
+  // Observe stat cards
+  document.querySelectorAll('.stat-card').forEach(card => {
+    observer.observe(card);
+  });
+
+  // Observe preview features
+  document.querySelectorAll('.preview-feature').forEach(feature => {
+    observer.observe(feature);
+  });
+};
+
+/* ============================================
+   BUTTON INTERACTIONS
+   ============================================ */
+
+const setupButtonInteractions = () => {
+  const buttons = document.querySelectorAll('.btn');
+
+  buttons.forEach(button => {
+    button.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.05)';
+    });
+
+    button.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+    });
+
+    button.addEventListener('click', function() {
+      // Add ripple effect
+      const ripple = document.createElement('span');
+      ripple.style.position = 'absolute';
+      ripple.style.borderRadius = '50%';
+      ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+      ripple.style.transform = 'scale(0)';
+      ripple.style.animation = 'ripple 0.6s ease-out';
+      
+      this.style.position = 'relative';
+      this.style.overflow = 'hidden';
+      this.appendChild(ripple);
+
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
+};
+
+/* ============================================
+   RIPPLE ANIMATION
+   ============================================ */
+
+const addRippleStyles = () => {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+};
+
+/* ============================================
+   PROGRESS BAR ANIMATION
+   ============================================ */
+
+const animateProgressBars = () => {
+  const observerOptions = {
+    threshold: 0.5
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const progressFill = entry.target.querySelector('.progress-fill');
+        if (progressFill) {
+          const width = progressFill.style.width;
+          progressFill.style.width = '0';
+          
+          setTimeout(() => {
+            progressFill.style.width = width;
+          }, 100);
+        }
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.preview-stat-bar').forEach(bar => {
+    observer.observe(bar);
+  });
+};
+
+/* ============================================
+   NOTIFICATION SYSTEM (Simple Alert)
+   ============================================ */
+
+const showNotification = (message, type = 'success') => {
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${type === 'success' ? '#00ff88' : '#ff4757'};
+    color: ${type === 'success' ? '#000' : '#fff'};
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    z-index: 10000;
+    animation: slideInRight 0.3s ease-out;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  `;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+};
+
+/* ============================================
+   BUTTON CLICK HANDLERS
+   ============================================ */
+
+const setupClickHandlers = () => {
+  // Get Started Button
+  const getStartedBtn = document.querySelector('.hero-buttons .btn-primary');
+  if (getStartedBtn) {
+    getStartedBtn.addEventListener('click', () => {
+      showNotification('Welcome! Ready to start your fitness journey? 🚀');
+    });
+  }
+
+  // Explore Features Button
+  const exploreFeaturesBtn = document.querySelector('.hero-buttons .btn-outline');
+  if (exploreFeaturesBtn) {
+    exploreFeaturesBtn.addEventListener('click', () => {
+      const featuresSection = document.getElementById('features');
+      featuresSection.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  // Login Button
+  const loginBtn = document.getElementById('loginBtn');
+  if (loginBtn) {
+    loginBtn.addEventListener('click', () => {
+      showNotification('Redirecting to login...', 'info');
+      // setTimeout(() => window.location.href = '/login', 1000);
+    });
+  }
+
+  // Signup Button
+  const signupBtn = document.getElementById('signupBtn');
+  if (signupBtn) {
+    signupBtn.addEventListener('click', () => {
+      showNotification('Redirecting to signup...', 'info');
+      // setTimeout(() => window.location.href = '/signup', 1000);
+    });
+  }
+
+  // CTA Buttons
+  const ctaButtons = document.querySelectorAll('.cta-buttons .btn');
+  ctaButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      showNotification('Get ready to transform your fitness! 💪');
+    });
+  });
+};
+
+/* ============================================
+   MOUSE FOLLOW EFFECT (Optional)
+   ============================================ */
+
+const setupMouseFollowEffect = () => {
+  const heroSection = document.querySelector('.hero');
+  const heroBackground = document.querySelector('.hero-background');
+
+  if (heroSection && heroBackground) {
+    heroSection.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth) * 20;
+      const y = (e.clientY / window.innerHeight) * 20;
+      
+      heroBackground.style.transform = `translate(${x}px, ${y}px)`;
+    });
+  }
+};
+
+/* ============================================
+   PARALLAX EFFECT
+   ============================================ */
+
+const setupParallaxEffect = () => {
+  const parallaxElements = document.querySelectorAll('[data-parallax]');
+
+  window.addEventListener('scroll', () => {
+    parallaxElements.forEach(element => {
+      const speed = element.getAttribute('data-parallax');
+      const yPos = window.pageYOffset * speed;
+      element.style.transform = `translateY(${yPos}px)`;
+    });
+  });
+};
+
+/* ============================================
+   INIT ALL FUNCTIONS
+   ============================================ */
+
+const initializeApp = () => {
+  // Add animation styles
+  addRippleStyles();
+
+  // Setup all interactions
+  countUpStats();
+  observeElements();
+  setupButtonInteractions();
+  animateProgressBars();
+  setupClickHandlers();
+  setupMouseFollowEffect();
+  setupParallaxEffect();
+
+  console.log('🚀 Run Bangla AI - Initialization Complete!');
+};
+
+/* ============================================
+   DOM CONTENT LOADED
+   ============================================ */
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+  initializeApp();
+}
+
+/* ============================================
+   ADAPTIVE BACKGROUND (Dynamic)
+   ============================================ */
+
+const adaptiveBackground = () => {
+  const hour = new Date().getHours();
+  const isDark = hour < 6 || hour > 18;
+  
+  if (!isDark) {
+    // Optional: Adjust for daytime viewing
+    document.body.style.filter = 'brightness(0.95)';
+  }
+};
+
+adaptiveBackground();
+
+/* ============================================
+   PERFORMANCE OPTIMIZATION
+   ============================================ */
+
+// Debounce function for scroll events
+const debounce = (func, wait) => {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+
+// Optimize scroll listeners
+const optimizedScroll = debounce(() => {
+  // Add optimized scroll logic here
+}, 100);
+
+window.addEventListener('scroll', optimizedScroll);
+
+/* ============================================
+   AUTHENTICATION MODALS
+   ============================================ */
+
+// Open/Close Modal Functions - REMOVED (using separate pages now)
+
+// Close modals when clicking outside - REMOVED
+
+// Handle Login Form - REMOVED
+
+// Handle Signup Form - REMOVED
+
+console.log('✅ Run Bangla AI Landing Page Loaded Successfully!');
+
+/* ============================================
+   MARATHON EVENTS SECTION
+   ============================================ */
+
+// Marathon Events Data with Real Images
+const marathonEvents = [
+  {
+    id: 1,
+    title: "Dhaka City Marathon 2026",
+    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&h=300&fit=crop",
+    description: "Experience the vibrant streets of Dhaka in this exciting urban marathon event. Join thousands of runners for an unforgettable day filled with energy, community spirit, and fitness challenges.",
+    date: "May 15, 2026",
+    location: "Dhaka, Bangladesh",
+    distance: "5K / 10K / 21K"
+  },
+  {
+    id: 2,
+    title: "Cox's Bazar Beach Run",
+    image: "https://images.unsplash.com/photo-1552674605-5defe6aa44bb?w=400&h=300&fit=crop",
+    description: "Run on the world's longest natural sea beach. Feel the sand beneath your feet and the sea breeze in your face in this unique beachside marathon experience.",
+    date: "June 10, 2026",
+    location: "Cox's Bazar, Bangladesh",
+    distance: "5K / 10K"
+  },
+  {
+    id: 3,
+    title: "Sundarbans Trail Run",
+    image: "https://images.unsplash.com/photo-1489749798305-4fea3ba63d60?w=400&h=300&fit=crop",
+    description: "Challenge yourself in nature's backyard. Run through the mystical trails of the Sundarbans mangrove forests. An adventure like no other.",
+    date: "July 8, 2026",
+    location: "Sundarbans, Bangladesh",
+    distance: "10K / 21K"
+  },
+  {
+    id: 4,
+    title: "Chattogram Hill Marathon",
+    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop",
+    description: "Conquer the hills of Chattogram in this challenging mountain marathon. Test your endurance and strength against nature's toughest terrain.",
+    date: "August 12, 2026",
+    location: "Chattogram, Bangladesh",
+    distance: "10K / 21K"
+  },
+  {
+    id: 5,
+    title: "Sylhet Tea Garden Run",
+    image: "https://images.unsplash.com/photo-1473093295203-cad00df16e50?w=400&h=300&fit=crop",
+    description: "Run through the lush green tea gardens of Sylhet. A unique running experience surrounded by nature's beauty and serene landscape.",
+    date: "September 5, 2026",
+    location: "Sylhet, Bangladesh",
+    distance: "5K / 10K"
+  },
+  {
+    id: 6,
+    title: "Rajshahi Heritage Run",
+    image: "https://images.unsplash.com/photo-1508615039623-a25605d2b022?w=400&h=300&fit=crop",
+    description: "Explore the historical heritage of Rajshahi while running. A perfect blend of fitness and cultural experience through the city's historic districts.",
+    date: "October 20, 2026",
+    location: "Rajshahi, Bangladesh",
+    distance: "5K / 10K / 21K"
+  }
+];
+
+// Drag Scrolling State
+let isDragging = false;
+let startX = 0;
+let scrollLeft = 0;
+
+// Smooth scroll to Marathon section
+function smoothScrollToMarathon() {
+  const marathonSection = document.getElementById('marathons');
+  if (marathonSection) {
+    marathonSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Initialize Marathon Carousel
+function initMarathonCarousel() {
+  const carousel = document.getElementById('marathonCarousel');
+  const container = document.getElementById('marathonContainer');
+  
+  if (!carousel || !container) return;
+  
+  // Clear previous content
+  carousel.innerHTML = '';
+  
+  // Render initial cards
+  marathonEvents.forEach(event => {
+    carousel.appendChild(createMarathonCard(event));
+  });
+  
+  // Duplicate cards for infinite loop effect
+  marathonEvents.forEach(event => {
+    carousel.appendChild(createMarathonCard(event));
+  });
+  
+  // Add drag scroll listeners
+  setupDragScroll();
+}
+
+// Create Marathon Card Element
+function createMarathonCard(event) {
+  const card = document.createElement('div');
+  card.className = 'marathon-card';
+  card.onclick = (e) => {
+    // Only open modal if not dragging
+    if (!isDragging) {
+      openMarathonModal(event);
+    }
+  };
+  
+  card.innerHTML = `
+    <img src="${event.image}" alt="${event.title}" class="marathon-card-image" loading="lazy">
+    <div class="marathon-card-content">
+      <h3 class="marathon-card-title">${event.title}</h3>
+      <p class="marathon-card-description">${event.description}</p>
+      <div class="marathon-card-meta">
+        <div class="marathon-meta-item">📅 ${event.date}</div>
+        <div class="marathon-meta-item">📍 ${event.location}</div>
+        <div class="marathon-meta-item">🏃 ${event.distance}</div>
+      </div>
+      <button class="marathon-card-btn" onclick="event.stopPropagation();">View Details</button>
+    </div>
+  `;
+  
+  return card;
+}
+
+// Setup Drag Scroll Functionality
+function setupDragScroll() {
+  const carousel = document.getElementById('marathonCarousel');
+  const container = document.getElementById('marathonContainer');
+  
+  if (!carousel || !container) return;
+  
+  // Mouse down - start dragging
+  container.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - container.offsetLeft;
+    scrollLeft = container.scrollLeft;
+    container.style.cursor = 'grabbing';
+    container.style.scrollBehavior = 'auto';
+  });
+  
+  // Mouse move - drag the carousel
+  container.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startX) * 1.5; // Scroll multiplier for smoother feel
+    container.scrollLeft = scrollLeft - walk;
+  });
+  
+  // Mouse up - stop dragging
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+    container.style.cursor = 'grab';
+    container.style.scrollBehavior = 'smooth';
+  });
+  
+  // Touch support for mobile
+  container.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].pageX - container.offsetLeft;
+    scrollLeft = container.scrollLeft;
+  });
+  
+  container.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    
+    const x = e.touches[0].pageX - container.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    container.scrollLeft = scrollLeft - walk;
+  });
+  
+  container.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+}
+
+// Open Marathon Modal
+function openMarathonModal(event) {
+  const modal = document.getElementById('marathonModal');
+  
+  document.getElementById('modalImage').src = event.image;
+  document.getElementById('modalTitle').textContent = event.title;
+  document.getElementById('modalDescription').textContent = event.description;
+  document.getElementById('modalDate').textContent = event.date;
+  document.getElementById('modalLocation').textContent = event.location;
+  document.getElementById('modalDistance').textContent = event.distance;
+  
+  // Store event data for registration
+  modal.dataset.currentEvent = JSON.stringify(event);
+  
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// Close Marathon Modal
+function closeMarathonModal() {
+  const modal = document.getElementById('marathonModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
+
+// Register for Marathon
+function registerMarathon() {
+  // Redirect to the new React registration app
+  window.location.href = 'http://localhost:3000';
+  return;
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const marathonModal = document.getElementById('marathonModal');
+  
+  // Close modal when clicking outside
+  if (marathonModal) {
+    marathonModal.addEventListener('click', (e) => {
+      if (e.target === marathonModal) {
+        closeMarathonModal();
+      }
+    });
+  }
+  
+  // Close modal with Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeMarathonModal();
+    }
+  });
+  
+  // Initialize carousel
+  setTimeout(() => {
+    initMarathonCarousel();
+  }, 100);
+});
+
+/* ============================================
+   REGISTRATION FORM MODAL
+   ============================================ */
+
+let currentRegistrationStep = 1;
+let registrationFormData = {};
+let registrationCurrentEvent = null;
+
+// Category prices
+const categoryPrices = {
+  "5K": 500,
+  "10K": 800,
+  "21K": 1200
+};
+
+// Open Registration Form
+function openRegistrationForm(event) {
+  registrationCurrentEvent = event;
+  currentRegistrationStep = 1;
+  registrationFormData = {
+    name: '',
+    email: '',
+    phone: '',
+    emergencyContact: '',
+    tshirtSize: 'M',
+    category: '5K',
+    medicalCondition: '',
+    paymentMethod: 'credit_card',
+    discountCode: ''
+  };
+  
+  // Populate event information
+  document.getElementById('eventNameReg').textContent = event.title;
+  document.getElementById('eventDateReg').textContent = event.date;
+  document.getElementById('eventLocationReg').textContent = event.location;
+  
+  const modal = document.getElementById('registrationModal');
+  if (modal) {
+    modal.style.display = 'flex';
+    updateRegistrationStep();
+  }
+}
+
+// Close Registration Form
+function closeRegistrationForm() {
+  const modal = document.getElementById('registrationModal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// Update Registration Step Display
+function updateRegistrationStep() {
+  const modal = document.getElementById('registrationModal');
+  if (!modal) return;
+  
+  // Update step indicator
+  for (let i = 1; i <= 3; i++) {
+    const stepElement = document.getElementById(`regStep${i}`);
+    if (stepElement) {
+      if (i <= currentRegistrationStep) {
+        stepElement.classList.add('active');
+      } else {
+        stepElement.classList.remove('active');
+      }
+    }
+  }
+  
+  // Update content visibility
+  document.getElementById('regStepContent1').style.display = currentRegistrationStep === 1 ? 'block' : 'none';
+  document.getElementById('regStepContent2').style.display = currentRegistrationStep === 2 ? 'block' : 'none';
+  document.getElementById('regStepContent3').style.display = currentRegistrationStep === 3 ? 'block' : 'none';
+  
+  // Update button states
+  const prevBtn = document.getElementById('regPrevBtn');
+  const nextBtn = document.getElementById('regNextBtn');
+  const closeBtn = document.getElementById('regCloseBtn');
+  
+  if (prevBtn) prevBtn.style.display = currentRegistrationStep > 1 ? 'block' : 'none';
+  
+  if (currentRegistrationStep === 3) {
+    // Success step
+    if (nextBtn) nextBtn.style.display = 'none';
+    if (closeBtn) closeBtn.style.display = 'block';
+  } else {
+    // Details or Payment step
+    if (nextBtn) {
+      nextBtn.textContent = currentRegistrationStep === 2 ? 'Complete Payment' : 'Next: Payment →';
+      nextBtn.style.display = 'block';
+    }
+    if (closeBtn) closeBtn.style.display = 'none';
+  }
+  
+  if (currentRegistrationStep === 2) {
+    updatePriceBreakdown();
+  }
+}
+
+// Handle Registration Input Change
+function handleRegistrationInput(fieldName, value) {
+  registrationFormData[fieldName] = value;
+  
+  if (fieldName === 'discountCode' && currentRegistrationStep === 2) {
+    updatePriceBreakdown();
+  }
+}
+
+// Update Price Breakdown
+function updatePriceBreakdown() {
+  const basePrice = categoryPrices[registrationFormData.category] || 500;
+  const discountCode = registrationFormData.discountCode?.toUpperCase();
+  
+  const promoCodes = {
+    "RUN10": 10,
+    "RUN20": 20,
+    "BANGLA5": 5,
+    "FITLIFE15": 15
+  };
+  
+  const discountPercentage = promoCodes[discountCode] || 0;
+  const discountAmount = (basePrice * discountPercentage) / 100;
+  const finalAmount = basePrice - discountAmount;
+  
+  document.getElementById('basePriceDisplay').textContent = `${basePrice} Tk`;
+  
+  if (discountPercentage > 0) {
+    document.getElementById('discountDisplay').style.display = 'flex';
+    document.getElementById('discountPercentageDisplay').textContent = `${discountPercentage}%`;
+    document.getElementById('discountAmountDisplay').textContent = `-${Math.round(discountAmount)} Tk`;
+  } else {
+    document.getElementById('discountDisplay').style.display = 'none';
+  }
+  
+  document.getElementById('finalAmountDisplay').textContent = `${Math.round(finalAmount)} Tk`;
+}
+
+// Validate Registration Step 1
+function validateRegistrationStep1() {
+  const { name, email, phone, emergencyContact } = registrationFormData;
+  
+  if (!name.trim()) {
+    alert('❌ Name is required');
+    return false;
+  }
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email.trim() || !emailRegex.test(email)) {
+    alert('❌ Valid email is required');
+    return false;
+  }
+  
+  if (!phone.trim() || !/^\d{10,11}$/.test(phone.replace(/[\s\-]/g, ''))) {
+    alert('❌ Phone number must be 10-11 digits');
+    return false;
+  }
+  
+  if (!emergencyContact.trim()) {
+    alert('❌ Emergency contact is required');
+    return false;
+  }
+  
+  return true;
+}
+
+// Handle Registration Next
+function handleRegistrationNext() {
+  if (currentRegistrationStep === 1) {
+    if (!validateRegistrationStep1()) return;
+    currentRegistrationStep = 2;
+  } else if (currentRegistrationStep === 2) {
+    submitRegistration();
+    return;
+  }
+  
+  updateRegistrationStep();
+}
+
+// Handle Registration Previous
+function handleRegistrationPrevious() {
+  if (currentRegistrationStep > 1) {
+    currentRegistrationStep--;
+    updateRegistrationStep();
+  }
+}
+
+// Submit Registration
+async function submitRegistration() {
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const basePrice = categoryPrices[registrationFormData.category] || 500;
+    
+    const registrationData = {
+      userId: user?._id || null,
+      eventId: registrationCurrentEvent.id,
+      eventName: registrationCurrentEvent.title,
+      name: registrationFormData.name,
+      email: registrationFormData.email,
+      phone: registrationFormData.phone,
+      emergencyContact: registrationFormData.emergencyContact,
+      tshirtSize: registrationFormData.tshirtSize,
+      category: registrationFormData.category,
+      medicalCondition: registrationFormData.medicalCondition,
+      paymentMethod: registrationFormData.paymentMethod,
+      amount: basePrice,
+      discountCode: registrationFormData.discountCode || undefined
+    };
+    
+    console.log('📤 Sending registration:', registrationData);
+    
+    const response = await fetch('http://localhost:5000/api/registration/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(registrationData)
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      currentRegistrationStep = 3;
+      displayRegistrationSuccess(result.data);
+      updateRegistrationStep();
+    } else {
+      alert(`❌ ${result.message}`);
+    }
+  } catch (error) {
+    console.error('❌ Registration error:', error);
+    alert('❌ Registration failed. Please try again.');
+  }
+}
+
+// Display Registration Success
+function displayRegistrationSuccess(data) {
+  document.getElementById('ticketIdDisplay').textContent = data.ticketId;
+  document.getElementById('eventNameDisplay').textContent = data.eventName;
+  document.getElementById('registrantNameDisplay').textContent = data.name;
+  document.getElementById('categoryDisplay').textContent = data.category;
+  document.getElementById('tshirtSizeDisplay').textContent = data.tshirtSize;
+  document.getElementById('finalAmountPaidDisplay').textContent = `${data.finalAmount} Tk`;
+  
+  if (data.discountPercentage > 0) {
+    document.getElementById('discountBadge').style.display = 'inline-block';
+    document.getElementById('discountBadge').textContent = `${data.discountPercentage}% OFF`;
+  }
+  
+  if (data.qrCode) {
+    document.getElementById('qrCodeImage').src = data.qrCode;
+  }
+}
